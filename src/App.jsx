@@ -51,7 +51,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <SmoothScroll>
-            <ChessBackground />
+           <ChessBackground />
             <div className="noise-overlay" />
             <ScrollToTop />
             <Routes>

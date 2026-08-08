@@ -108,7 +108,7 @@ export default function ChessBackground() {
     <canvas
       ref={canvasRef}
       data-testid="chess-background-canvas"
-      className="fixed inset-0 -z-10 pointer-events-none"
+      className="fixed inset-0 z-0 pointer-events-none"
       aria-hidden="true"
     />
   );
