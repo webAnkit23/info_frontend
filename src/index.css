@@ -1,12 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+.font-color{
+   color: rgb(47, 252, 254);
+   
+}
+.bg-color{
+  background-color: rgb(47, 252, 254);
+}
+
 @layer base {
   :root {
     --background: 240 12% 2%;
+    --cyan: 181 99% 59%;
     --foreground: 0 0% 98%;
     --card: 240 8% 6%;
     --card-foreground: 0 0% 98%;
@@ -41,7 +54,7 @@
     overflow-x: hidden;
   }
   ::selection {
-    background: #ffb800;
+    background: rgb(47, 252, 254);
     color: #050506;
   }
 }

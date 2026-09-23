@@ -11,24 +11,113 @@ export default function Team() {
       </p>
 
       <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-5" data-testid="team-grid">
-        {TEAM.map((m, i) => (
-          <Reveal key={m.name} delay={i * 0.06}>
-            <div className="group relative aspect-[3/4] overflow-hidden border border-white/10 bg-ink-surface card-hover">
-              {/* Monochrome initials 'portrait' revealing color on hover */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-display font-black text-7xl text-white/10 grayscale group-hover:text-amber-glow/80 transition-colors duration-500">
-                  {m.init}
-                </span>
-              </div>
-              <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/80 to-transparent">
-                <div className="text-6xl text-amber-glow/30 absolute right-3 top-[-2.5rem] group-hover:text-amber-glow/70 transition-colors duration-500">
-                  {"\u265E"}
-                </div>
-                <h3 className="font-display font-bold text-lg">{m.name}</h3>
-                <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-cyan-glow">{m.role}</p>
-              </div>
-            </div>
-          </Reveal>
+                {TEAM.map((m, i) => (
+                        <Reveal
+                          key={m.name}
+                          delay={i * 0.06}
+                        >
+                          <div
+                            className="
+                              group
+                              relative
+                              aspect-[3/4]
+                              overflow-hidden
+                              border
+                              border-white/10
+                              bg-ink-surface
+                              card-hover
+                            "
+                          >
+
+
+                            <img src={m.image} alt={m.name} className="absolute inset-0  w-full  h-full object-cover grayscale-0 
+                            group-hover:grayscale group-hover:brightness-75 group-hover:contrast-110 group-hover:scale-105
+                                      transition-all
+                                      duration-700
+                                    "
+                                  />
+
+                            {/* =====================================================
+                                IMAGE DARK OVERLAY
+                            ===================================================== */}
+
+                            <div
+                              className="
+                                absolute
+                                inset-0
+                                bg-gradient-to-t
+                                from-black
+                                via-black/30
+                                to-transparent
+                                opacity-90
+                              "
+                            />
+
+                            {/* =====================================================
+                                HOVER CYAN/AMBER GLOW
+                            ===================================================== */}
+
+                            <div
+                              className="
+                                absolute
+                                inset-0
+                                bg-cyan-glow/0
+                                group-hover:bg-cyan-glow/5
+                                transition-colors
+                                duration-500
+                              "
+                            />
+
+                            {/* =====================================================
+                                INFORMATION
+                            ===================================================== */}
+
+                            <div
+                              className="
+                                absolute
+                                inset-x-0
+                                bottom-0
+                                p-5
+                              "
+                            >
+
+                              {/* Chess knight */}
+
+                              <div
+                                className="
+                                  text-6xl
+                                  text-amber-glow/80
+                                  absolute
+                                  right-3
+                                  top-[-2.5rem]
+                                  group-hover:scale-110
+                                  transition-all
+                                  duration-500
+                                "
+                              >
+                                {"\u265E"}
+                              </div>
+
+                              <h3
+                                className="
+                                  font-display
+                                  font-bold
+                                  text-lg
+                                "
+                              >
+                                {m.name}
+                              </h3>
+
+                              <p
+                                className="font-mono text-[11px] uppercase tracking-[0.15em] text-cyan-glow mt-1"
+                              >
+                                {m.role}
+                              </p>
+
+                            </div>
+
+                          </div>
+                        </Reveal>
         ))}
       </div>
     </div>

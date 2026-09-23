@@ -5,9 +5,12 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Playfair Display"', "serif"],
-        sans: ['"Manrope"', "sans-serif"],
-        mono: ['"JetBrains Mono"', "monospace"],
+        mono : ['Orbitron', 'sans-serif'],
+        display :['Orbitron', 'sans-serif'],
+        sans : ['Orbitron', 'sans-serif'],
+        //display: ['"Playfair Display"', "serif"],
+       // sans: ['"Manrope"', "sans-serif"],
+       // mono: ['"JetBrains Mono"', "monospace"],
       },
       colors: {
         ink: {
@@ -16,7 +19,8 @@ module.exports = {
           raised: "#141419",
         },
         amber: {
-          glow: "#FFB800",
+          //glow: "#FFB800",
+          glow : "rgb(47, 252, 254)",
           hover: "#E6A600",
         },
         cyan: {

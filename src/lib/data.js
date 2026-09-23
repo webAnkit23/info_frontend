@@ -8,26 +8,49 @@ export const EVENT_INFO = {
 
 export const EVENTS = [
   {
-    id: "opening-gambit",
-    name: "Opening Gambit",
+    id: "Algorithmia",
+    name: "The Algorithmic Gambit",
     type: "Hackathon",
     icon: "\u265F",
     span: "lg",
-    duration: "36 Hours",
+    duration: "1 Hours",
     prize: "\u20B91,00,000",
     blurb:
-      "A 36-hour overnight build sprint. Open your game strong — ship a working product before the clock flags fall.",
+      "A high-intensity battle where algorithms become your moves and every problem is a strategic challenge. Participants must think several steps ahead, design efficient solutions, and outmaneuver the competition under time constraints. Only those who combine speed, precision, and strategy will reach the final checkmate.",
+
+    minPlayer: 1,
+    maxPlayer: 1,
+    registrationOpen: true,
+
+    fields: [
+      {
+        name: "college",
+        label: "College / Institution",
+        type: "text",
+        placeholder: "Enter your college name",
+        required: true,
+      },
+    ],
   },
+
   {
-    id: "knights-tour",
-    name: "Knight's Tour",
-    type: "Competitive Coding",
+    id: "Complete-the-meme",
+    name: "Meme Royale",
+    type: "Fun Challenge",
     icon: "\u265E",
     span: "sm",
-    duration: "3 Hours",
+    duration: "30 min",
     prize: "\u20B940,000",
-    blurb: "Navigate the trickiest algorithmic mazes. One wrong move and you're mated.",
+    blurb:
+      "Complete iconic memes, recognize legendary moments, and outsmart your opponents to claim the meme throne.",
+
+    minPlayer: 1,
+    maxPlayer: 2,
+    registrationOpen: true,
+
+    fields: [],
   },
+
   {
     id: "rook-endgame",
     name: "Rook Endgame",
@@ -36,18 +59,42 @@ export const EVENTS = [
     span: "sm",
     duration: "6 Hours",
     prize: "\u20B935,000",
-    blurb: "Capture the flag. Defend your castle, breach theirs.",
+    blurb:
+      "Capture the flag. Defend your castle, breach theirs.",
+
+    minPlayer: 1,
+    maxPlayer: 2,
+    registrationOpen: true,
+
+    fields: [
+      {
+        name: "github",
+        label: "GitHub Profile",
+        type: "url",
+        placeholder: "https://github.com/username",
+        required: true,
+      },
+    ],
   },
+
   {
-    id: "bishops-diagonal",
-    name: "Bishop's Diagonal",
-    type: "UI/UX Design",
+    id: "Crazy-Website",
+    name: "The Hidden Gambit",
+    type: "Mystery Challenge",
     icon: "\u265D",
     span: "sm",
-    duration: "4 Hours",
-    prize: "\u20B925,000",
-    blurb: "Design across the board. Aesthetics meet strategy in a rapid product-design duel.",
+    duration: "30 min",
+    prize: "\u20B940,000",
+    blurb:
+      "A mysterious puzzle hidden within the web. Uncover anomalies, follow cryptic clues, and think beyond the visible to find the winning move.",
+
+    minPlayer: 1,
+    maxPlayer: 1,
+    registrationOpen: true,
+
+    fields: [],
   },
+
   {
     id: "queens-strategy",
     name: "Queen's Strategy",
@@ -58,7 +105,29 @@ export const EVENTS = [
     prize: "\u20B950,000",
     blurb:
       "The most powerful event on the board. Solve open-ended AI/ML problem statements with real-world datasets and defend your play before the grandmaster jury.",
+
+    minPlayer: 2,
+    maxPlayer: 4,
+    registrationOpen: true,
+
+    fields: [
+      {
+        name: "college",
+        label: "College / Institution",
+        type: "text",
+        placeholder: "Enter your college name",
+        required: true,
+      },
+      {
+        name: "github",
+        label: "GitHub Repository",
+        type: "url",
+        placeholder: "https://github.com/...",
+        required: true,
+      },
+    ],
   },
+
   {
     id: "kings-keynote",
     name: "King's Keynote",
@@ -67,19 +136,26 @@ export const EVENTS = [
     span: "sm",
     duration: "2 Hours",
     prize: "Open Entry",
-    blurb: "Industry grandmasters share the moves that shaped their careers.",
+    blurb:
+      "Industry grandmasters share the moves that shaped their careers.",
+
+    minPlayer: 1,
+    maxPlayer: 1,
+    registrationOpen: true,
+
+    fields: [],
   },
 ];
 
 export const TEAM = [
-  { name: "Aarav Menon", role: "Convenor", init: "AM" },
-  { name: "Diya Krishnan", role: "Technical Lead", init: "DK" },
-  { name: "Rohan Iyer", role: "Design Head", init: "RI" },
-  { name: "Sneha Raghavan", role: "Events Coordinator", init: "SR" },
-  { name: "Karthik Subramanian", role: "Sponsorship Lead", init: "KS" },
-  { name: "Ananya Pillai", role: "Outreach & PR", init: "AP" },
-  { name: "Vikram Nair", role: "Logistics Head", init: "VN" },
-  { name: "Meera Balaji", role: "Content Lead", init: "MB" },
+  { name: "Aditya ", role: "Convenor", init: "AM", image : "/images/aditya.jpeg" },
+  { name: "Saumya Gangwar", role: "Technical Lead", init: "SG" , image : "/images/saumya.jpeg"},
+  { name: "Anshuman ", role: "Design Head", init: "RI", image : "/images/anshu.jpeg" },
+  { name: "Sneha Raghavan", role: "Events Coordinator", init: "SR", image : "/images/satyam.jpeg" },
+  { name: "Karthik Subramanian", role: "Sponsorship Lead", init: "KS" , image : "/images/aditya.jpeg"},
+  { name: "Ananya Pillai", role: "Outreach & PR", init: "AP", image : "/images/.jpeg" },
+  { name: "Vikram Nair", role: "Logistics Head", init: "VN" ,image : "/images/pussy.jpeg"},
+  { name: "Meera Balaji", role: "Content Lead", init: "MB",image : "/images/laksya.jpeg" },
 ];
 
 export const MANIFESTO = [
@@ -101,8 +177,8 @@ export const MANIFESTO = [
 ];
 
 export const STATS = [
-  { value: "5000+", label: "Players" },
-  { value: "24", label: "Events" },
-  { value: "\u20B93L+", label: "Prize Pool" },
-  { value: "60+", label: "Colleges" },
+  { value: "8+", label: "Battles" },
+  { value: "500+", label: "Players" },
+  { value: "₹1L+", label: "Prize Pool" },
+  { value: "1", label: "Ultimate Champion" },
 ];

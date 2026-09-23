@@ -182,3 +182,479 @@
     border-right-color: var(--border);
   }
 }
+
+
+/* ================================================================
+   INFOTREK CINEMATIC LOADER
+================================================================ */
+
+.loader-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  background: #020609;
+
+  animation: loader-screen-fade 1.55s
+    cubic-bezier(0.77, 0, 0.175, 1)
+    forwards;
+}
+
+
+/* ================================================================
+   MAIN DARK COVER
+================================================================ */
+
+.loader-cover {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(47, 252, 254, 0.035) 0%,
+      rgba(2, 6, 9, 0.96) 55%,
+      #020609 100%
+    );
+
+  transform-origin: center;
+
+  animation:
+    loader-cover-open
+    1.45s
+    cubic-bezier(0.76, 0, 0.24, 1)
+    forwards;
+}
+
+
+/* ================================================================
+   CENTER SCAN
+================================================================ */
+
+.loader-scan {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 0;
+  height: 1px;
+
+  transform: translate(
+    -50%,
+    -50%
+  );
+
+  background: rgba(
+    47,
+    252,
+    254,
+    0.9
+  );
+
+  box-shadow:
+    0 0 8px rgba(
+      47,
+      252,
+      254,
+      0.8
+    ),
+    0 0 25px rgba(
+      47,
+      252,
+      254,
+      0.4
+    ),
+    0 0 80px rgba(
+      47,
+      252,
+      254,
+      0.18
+    );
+
+  animation:
+    loader-scan-expand
+    0.85s
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    forwards;
+}
+
+
+/* ================================================================
+   SCAN BRIGHT CORE
+================================================================ */
+
+.loader-scan-core {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 0;
+  height: 3px;
+
+  transform: translate(
+    -50%,
+    -50%
+  );
+
+  background: #eaffff;
+
+  box-shadow:
+    0 0 6px #eaffff,
+    0 0 20px rgba(
+      47,
+      252,
+      254,
+      0.9
+    ),
+    0 0 50px rgba(
+      47,
+      252,
+      254,
+      0.55
+    );
+
+  animation:
+    loader-core-expand
+    0.75s
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    forwards;
+}
+
+
+/* ================================================================
+   CENTER MARK
+================================================================ */
+
+.loader-center {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  transform: translate(
+    -50%,
+    -50%
+  );
+
+  opacity: 0;
+
+  animation:
+    loader-center-in
+    0.35s
+    ease-out
+    0.25s
+    forwards;
+}
+
+
+.loader-center-line {
+  width: 18px;
+  height: 1px;
+
+  background: rgba(
+    47,
+    252,
+    254,
+    0.4
+  );
+}
+
+
+.loader-center-dot {
+  width: 3px;
+  height: 3px;
+
+  border-radius: 50%;
+
+  background: #eaffff;
+
+  box-shadow:
+    0 0 8px #2ffcff,
+    0 0 20px rgba(
+      47,
+      252,
+      254,
+      0.7
+    );
+}
+
+
+/* ================================================================
+   TOP / BOTTOM EDGES
+================================================================ */
+
+.loader-edge {
+  position: absolute;
+
+  left: 50%;
+
+  width: 0;
+  height: 1px;
+
+  transform: translateX(
+    -50%
+  );
+
+  background: rgba(
+    47,
+    252,
+    254,
+    0.25
+  );
+
+  animation:
+    loader-edge-expand
+    0.9s
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    0.15s
+    forwards;
+}
+
+
+.loader-edge-top {
+  top: 20%;
+}
+
+
+.loader-edge-bottom {
+  bottom: 20%;
+}
+
+
+/* ================================================================
+   COVER OPENS
+================================================================ */
+
+@keyframes loader-cover-open {
+  0% {
+    clip-path: inset(
+      0 0 0 0
+    );
+  }
+
+  45% {
+    clip-path: inset(
+      0 0 0 0
+    );
+  }
+
+  100% {
+    clip-path: inset(
+      50% 0 50% 0
+    );
+  }
+}
+
+
+/* ================================================================
+   SCAN EXPANDS
+================================================================ */
+
+@keyframes loader-scan-expand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  65% {
+    width: 120vw;
+    opacity: 1;
+  }
+
+  100% {
+    width: 180vw;
+    opacity: 0;
+  }
+}
+
+
+/* ================================================================
+   CORE
+================================================================ */
+
+@keyframes loader-core-expand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  55% {
+    width: 80px;
+    opacity: 1;
+  }
+
+  100% {
+    width: 300px;
+    opacity: 0;
+  }
+}
+
+
+/* ================================================================
+   CENTER
+================================================================ */
+
+@keyframes loader-center-in {
+  0% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      scale(0.5);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+}
+
+
+/* ================================================================
+   EDGES
+================================================================ */
+
+@keyframes loader-edge-expand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  100% {
+    width: 70vw;
+    opacity: 0;
+  }
+}
+
+
+/* ================================================================
+   SCREEN FADE
+================================================================ */
+
+@keyframes loader-screen-fade {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+
+/* ================================================================
+   MOBILE
+================================================================ */
+
+@media (max-width: 768px) {
+
+  .loader-edge-top {
+    top: 28%;
+  }
+
+  .loader-edge-bottom {
+    bottom: 28%;
+  }
+
+  .loader-center-line {
+    width: 12px;
+  }
+
+  .loader-scan {
+    box-shadow:
+      0 0 8px rgba(
+        47,
+        252,
+        254,
+        0.8
+      ),
+      0 0 30px rgba(
+        47,
+        252,
+        254,
+        0.3
+      );
+  }
+}
+
+
+/* ================================================================
+   REDUCED MOTION
+================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .loader-screen,
+  .loader-cover,
+  .loader-scan,
+  .loader-scan-core,
+  .loader-center,
+  .loader-edge {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
