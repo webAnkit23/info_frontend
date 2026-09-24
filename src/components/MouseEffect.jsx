@@ -15,28 +15,40 @@ const MouseEffect = () => {
 
     const particles = [];
     const sparks = [];
+    const trail = [];
 
     const mouse = {
       x: width / 2,
       y: height / 2,
+
+      targetX: width / 2,
+      targetY: height / 2,
+
       prevX: width / 2,
       prevY: height / 2,
+
       vx: 0,
       vy: 0,
+
+      speed: 0,
       active: false,
     };
 
-    const PARTICLE_COUNT = window.innerWidth < 768 ? 55 : 110;
+    const PARTICLE_COUNT =
+      window.innerWidth < 768 ? 55 : 110;
 
-    // --------------------------------
-    // Canvas
-    // --------------------------------
+    // ==========================================
+    // CANVAS
+    // ==========================================
 
     const resize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(
+        window.devicePixelRatio || 1,
+        2
+      );
 
       canvas.width = width * dpr;
       canvas.height = height * dpr;
@@ -51,26 +63,25 @@ const MouseEffect = () => {
 
     window.addEventListener("resize", resize);
 
-    // --------------------------------
-    // Particle
-    // --------------------------------
+    // ==========================================
+    // PARTICLES
+    // ==========================================
 
     const createParticle = () => {
       return {
         x: Math.random() * width,
         y: Math.random() * height,
 
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
 
-        size: Math.random() * 1.5 + 0.4,
+        size: Math.random() * 1.7 + 0.5,
 
         alpha: Math.random() * 0.5 + 0.15,
 
-        // Cyan / blue / purple
-        hue: Math.random() > 0.8 ? 270 : 190,
+        hue: Math.random() > 0.82 ? 270 : 190,
 
-        life: 1,
+        orbit: Math.random() > 0.7,
       };
     };
 
@@ -78,38 +89,52 @@ const MouseEffect = () => {
       particles.push(createParticle());
     }
 
-    // --------------------------------
-    // Mouse movement
-    // --------------------------------
+    // ==========================================
+    // MOUSE
+    // ==========================================
 
     const handleMouseMove = (e) => {
-      mouse.prevX = mouse.x;
-      mouse.prevY = mouse.y;
+      mouse.prevX = mouse.targetX;
+      mouse.prevY = mouse.targetY;
 
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-
-      mouse.vx = mouse.x - mouse.prevX;
-      mouse.vy = mouse.y - mouse.prevY;
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
 
       mouse.active = true;
+
+      // Store trail positions
+      trail.push({
+        x: e.clientX,
+        y: e.clientY,
+        life: 1,
+      });
+
+      if (trail.length > 25) {
+        trail.shift();
+      }
     };
 
-    window.addEventListener("mousemove", handleMouseMove, {
-      passive: true,
-    });
+    window.addEventListener(
+      "mousemove",
+      handleMouseMove,
+      {
+        passive: true,
+      }
+    );
 
-    // --------------------------------
+    // ==========================================
     // CLICK
-    // --------------------------------
+    // ==========================================
 
     const handleClick = (e) => {
       const count = 45;
 
       for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
+        const angle =
+          Math.random() * Math.PI * 2;
 
-        const speed = Math.random() * 4 + 1.5;
+        const speed =
+          Math.random() * 4 + 1.5;
 
         sparks.push({
           x: e.clientX,
@@ -122,33 +147,49 @@ const MouseEffect = () => {
 
           life: 1,
 
-          decay: Math.random() * 0.025 + 0.015,
+          decay:
+            Math.random() * 0.025 + 0.015,
 
-          hue: Math.random() > 0.75 ? 270 : 190,
+          hue:
+            Math.random() > 0.75
+              ? 270
+              : 190,
         });
       }
 
-      // Push nearby particles outward
+      // Push particles away from click
       particles.forEach((particle) => {
         const dx = particle.x - e.clientX;
         const dy = particle.y - e.clientY;
 
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distance = Math.sqrt(
+          dx * dx + dy * dy
+        );
 
-        if (distance < 180 && distance > 0) {
-          const force = (1 - distance / 180) * 2;
+        if (
+          distance < 180 &&
+          distance > 0
+        ) {
+          const force =
+            (1 - distance / 180) * 2;
 
-          particle.vx += (dx / distance) * force;
-          particle.vy += (dy / distance) * force;
+          particle.vx +=
+            (dx / distance) * force;
+
+          particle.vy +=
+            (dy / distance) * force;
         }
       });
     };
 
-    window.addEventListener("click", handleClick);
+    window.addEventListener(
+      "click",
+      handleClick
+    );
 
-    // --------------------------------
-    // Draw particle
-    // --------------------------------
+    // ==========================================
+    // PARTICLE DRAW
+    // ==========================================
 
     const drawParticle = (particle) => {
       const color = `hsl(${particle.hue}, 100%, 65%)`;
@@ -178,87 +219,181 @@ const MouseEffect = () => {
       ctx.shadowBlur = 0;
     };
 
-    // --------------------------------
-    // Update particles
-    // --------------------------------
+    // ==========================================
+    // UPDATE PARTICLES
+    // ==========================================
 
     const updateParticles = () => {
       particles.forEach((particle) => {
-        // Natural movement
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // --------------------------------
-        // Cursor magnetic flow
-        // --------------------------------
+        // --------------------------------------
+        // CURSOR FORCE FIELD
+        // --------------------------------------
 
         if (mouse.active) {
-          const dx = mouse.x - particle.x;
-          const dy = mouse.y - particle.y;
+          const dx =
+            mouse.x - particle.x;
 
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          const dy =
+            mouse.y - particle.y;
 
-          const influence = 260;
+          const distance = Math.sqrt(
+            dx * dx + dy * dy
+          );
 
-          if (distance < influence && distance > 1) {
-            const strength =
-              Math.pow(1 - distance / influence, 2) * 0.12;
+          const influence = 280;
+
+          if (
+            distance < influence &&
+            distance > 1
+          ) {
+            const normalizedX =
+              dx / distance;
+
+            const normalizedY =
+              dy / distance;
+
+            const force =
+              Math.pow(
+                1 - distance / influence,
+                2
+              );
+
+            // ----------------------------------
+            // PUSH PARTICLES AWAY
+            // ----------------------------------
+
+            const pushStrength =
+              force * 0.65;
+
+            particle.vx -=
+              normalizedX *
+              pushStrength;
+
+            particle.vy -=
+              normalizedY *
+              pushStrength;
+
+            // ----------------------------------
+            // SIDEWAYS / CURL FORCE
+            // ----------------------------------
+
+            const swirlStrength =
+              force * 0.75;
 
             particle.vx +=
-              (dx / distance) * strength;
+              -normalizedY *
+              swirlStrength;
 
             particle.vy +=
-              (dy / distance) * strength;
+              normalizedX *
+              swirlStrength;
 
-            // Cursor movement creates a directional flow
-            particle.vx += mouse.vx * 0.002;
-            particle.vy += mouse.vy * 0.002;
+            // ----------------------------------
+            // MOUSE VELOCITY
+            // ----------------------------------
+
+            particle.vx +=
+              mouse.vx * 0.003;
+
+            particle.vy +=
+              mouse.vy * 0.003;
           }
         }
 
-        // Friction
-        particle.vx *= 0.985;
-        particle.vy *= 0.985;
+        // --------------------------------------
+        // FRICTION
+        // --------------------------------------
 
-        // --------------------------------
-        // Screen wrapping
-        // --------------------------------
+        particle.vx *= 0.96;
+        particle.vy *= 0.96;
 
-        if (particle.x < -10) particle.x = width + 10;
-        if (particle.x > width + 10) particle.x = -10;
+        // --------------------------------------
+        // LIMIT SPEED
+        // --------------------------------------
 
-        if (particle.y < -10) particle.y = height + 10;
-        if (particle.y > height + 10) particle.y = -10;
+        const maxSpeed = 2.5;
+
+        const speed = Math.sqrt(
+          particle.vx * particle.vx +
+          particle.vy * particle.vy
+        );
+
+        if (speed > maxSpeed) {
+          particle.vx =
+            (particle.vx / speed) *
+            maxSpeed;
+
+          particle.vy =
+            (particle.vy / speed) *
+            maxSpeed;
+        }
+
+        // --------------------------------------
+        // SCREEN WRAP
+        // --------------------------------------
+
+        if (particle.x < -10)
+          particle.x = width + 10;
+
+        if (particle.x > width + 10)
+          particle.x = -10;
+
+        if (particle.y < -10)
+          particle.y = height + 10;
+
+        if (particle.y > height + 10)
+          particle.y = -10;
 
         drawParticle(particle);
       });
     };
 
-    // --------------------------------
-    // Particle connections
-    // --------------------------------
+    // ==========================================
+    // PARTICLE CONNECTIONS
+    // ==========================================
 
     const drawConnections = () => {
       const maxDistance = 100;
 
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
+      for (
+        let i = 0;
+        i < particles.length;
+        i++
+      ) {
+        for (
+          let j = i + 1;
+          j < particles.length;
+          j++
+        ) {
           const p1 = particles[i];
           const p2 = particles[j];
 
           const dx = p1.x - p2.x;
           const dy = p1.y - p2.y;
 
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          const distance = Math.sqrt(
+            dx * dx + dy * dy
+          );
 
           if (distance < maxDistance) {
             const alpha =
-              (1 - distance / maxDistance) * 0.12;
+              (1 - distance / maxDistance) *
+              0.1;
 
             ctx.beginPath();
 
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
+            ctx.moveTo(
+              p1.x,
+              p1.y
+            );
+
+            ctx.lineTo(
+              p2.x,
+              p2.y
+            );
 
             ctx.strokeStyle = `rgba(
               34,
@@ -275,42 +410,36 @@ const MouseEffect = () => {
       }
     };
 
-    // --------------------------------
-    // Cursor trail
-    // --------------------------------
+    // ==========================================
+    // CURSOR TRAIL
+    // ==========================================
 
     const drawCursorTrail = () => {
       if (!mouse.active) return;
 
-      const speed = Math.sqrt(
-        mouse.vx * mouse.vx +
-        mouse.vy * mouse.vy
-      );
+      for (
+        let i = trail.length - 1;
+        i >= 0;
+        i--
+      ) {
+        const point = trail[i];
 
-      if (speed < 1) return;
+        point.life *= 0.88;
 
-      const trailCount = Math.min(
-        Math.floor(speed * 1.5),
-        8
-      );
+        if (point.life < 0.03) {
+          trail.splice(i, 1);
+          continue;
+        }
 
-      for (let i = 0; i < trailCount; i++) {
-        const offset = Math.random() * 20;
-
-        const x =
-          mouse.x -
-          mouse.vx * offset * 0.1;
-
-        const y =
-          mouse.y -
-          mouse.vy * offset * 0.1;
+        const radius =
+          1.5 + point.life * 3;
 
         ctx.beginPath();
 
         ctx.arc(
-          x,
-          y,
-          Math.random() * 1.8 + 0.5,
+          point.x,
+          point.y,
+          radius,
           0,
           Math.PI * 2
         );
@@ -319,11 +448,13 @@ const MouseEffect = () => {
           34,
           211,
           238,
-          ${Math.random() * 0.5 + 0.15}
+          ${point.life * 0.35}
         )`;
 
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = "rgba(34,211,238,0.8)";
+        ctx.shadowBlur = 15;
+
+        ctx.shadowColor =
+          "rgba(34,211,238,0.8)";
 
         ctx.fill();
 
@@ -331,12 +462,185 @@ const MouseEffect = () => {
       }
     };
 
-    // --------------------------------
-    // Click sparks
-    // --------------------------------
+    // ==========================================
+    // CURSOR ENERGY RING
+    // ==========================================
+
+    const drawCursor = () => {
+      if (!mouse.active) return;
+
+      const speed = mouse.speed;
+
+      // ----------------------------------------
+      // Outer glow
+      // ----------------------------------------
+
+      const glowRadius =
+        22 + Math.min(speed * 2, 15);
+
+      const gradient =
+        ctx.createRadialGradient(
+          mouse.x,
+          mouse.y,
+          0,
+          mouse.x,
+          mouse.y,
+          glowRadius
+        );
+
+      gradient.addColorStop(
+        0,
+        "rgba(34,211,238,0.20)"
+      );
+
+      gradient.addColorStop(
+        0.45,
+        "rgba(34,211,238,0.08)"
+      );
+
+      gradient.addColorStop(
+        1,
+        "rgba(34,211,238,0)"
+      );
+
+      ctx.beginPath();
+
+      ctx.arc(
+        mouse.x,
+        mouse.y,
+        glowRadius,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fillStyle = gradient;
+
+      ctx.fill();
+
+      // ----------------------------------------
+      // Main energy ring
+      // ----------------------------------------
+
+      ctx.beginPath();
+
+      ctx.arc(
+        mouse.x,
+        mouse.y,
+        12 + Math.min(speed, 5),
+        0,
+        Math.PI * 2
+      );
+
+      ctx.strokeStyle =
+        "rgba(34,211,238,0.8)";
+
+      ctx.lineWidth = 1;
+
+      ctx.shadowBlur = 15;
+
+      ctx.shadowColor =
+        "rgba(34,211,238,0.9)";
+
+      ctx.stroke();
+
+      ctx.shadowBlur = 0;
+
+      // ----------------------------------------
+      // Inner ring
+      // ----------------------------------------
+
+      ctx.beginPath();
+
+      ctx.arc(
+        mouse.x,
+        mouse.y,
+        4,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fillStyle =
+        "rgba(255,255,255,0.95)";
+
+      ctx.shadowBlur = 15;
+
+      ctx.shadowColor =
+        "rgba(34,211,238,1)";
+
+      ctx.fill();
+
+      ctx.shadowBlur = 0;
+
+      // ----------------------------------------
+      // Crosshair
+      // ----------------------------------------
+
+      const crossSize = 18;
+
+      ctx.beginPath();
+
+      // Top
+      ctx.moveTo(
+        mouse.x,
+        mouse.y - crossSize
+      );
+
+      ctx.lineTo(
+        mouse.x,
+        mouse.y - 9
+      );
+
+      // Bottom
+      ctx.moveTo(
+        mouse.x,
+        mouse.y + 9
+      );
+
+      ctx.lineTo(
+        mouse.x,
+        mouse.y + crossSize
+      );
+
+      // Left
+      ctx.moveTo(
+        mouse.x - crossSize,
+        mouse.y
+      );
+
+      ctx.lineTo(
+        mouse.x - 9,
+        mouse.y
+      );
+
+      // Right
+      ctx.moveTo(
+        mouse.x + 9,
+        mouse.y
+      );
+
+      ctx.lineTo(
+        mouse.x + crossSize,
+        mouse.y
+      );
+
+      ctx.strokeStyle =
+        "rgba(34,211,238,0.55)";
+
+      ctx.lineWidth = 1;
+
+      ctx.stroke();
+    };
+
+    // ==========================================
+    // CLICK SPARKS
+    // ==========================================
 
     const updateSparks = () => {
-      for (let i = sparks.length - 1; i >= 0; i--) {
+      for (
+        let i = sparks.length - 1;
+        i >= 0;
+        i--
+      ) {
         const spark = sparks[i];
 
         spark.x += spark.vx;
@@ -384,12 +688,41 @@ const MouseEffect = () => {
       }
     };
 
-    // --------------------------------
-    // Animation
-    // --------------------------------
+    // ==========================================
+    // ANIMATION
+    // ==========================================
 
     const animate = () => {
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+      // Smooth cursor movement
+      mouse.x +=
+        (mouse.targetX - mouse.x) *
+        0.18;
+
+      mouse.y +=
+        (mouse.targetY - mouse.y) *
+        0.18;
+
+      // Cursor velocity
+      mouse.vx =
+        mouse.x - mouse.prevX;
+
+      mouse.vy =
+        mouse.y - mouse.prevY;
+
+      mouse.speed = Math.sqrt(
+        mouse.vx * mouse.vx +
+        mouse.vy * mouse.vy
+      );
+
+      mouse.prevX = mouse.x;
+      mouse.prevY = mouse.y;
 
       drawConnections();
 
@@ -399,32 +732,43 @@ const MouseEffect = () => {
 
       updateSparks();
 
-      // Slowly reduce cursor velocity
+      drawCursor();
+
+      // Slowly reduce velocity
       mouse.vx *= 0.85;
       mouse.vy *= 0.85;
 
       animationFrame =
-        requestAnimationFrame(animate);
+        requestAnimationFrame(
+          animate
+        );
     };
 
     animate();
 
-    // --------------------------------
-    // Cleanup
-    // --------------------------------
+    // ==========================================
+    // CLEANUP
+    // ==========================================
 
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener(
+        "resize",
+        resize
+      );
+
       window.removeEventListener(
         "mousemove",
         handleMouseMove
       );
+
       window.removeEventListener(
         "click",
         handleClick
       );
 
-      cancelAnimationFrame(animationFrame);
+      cancelAnimationFrame(
+        animationFrame
+      );
     };
   }, []);
 

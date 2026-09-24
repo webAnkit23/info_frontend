@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 import { MaskedLines } from "@/components/Motion";
 import { EVENT_INFO } from "@/lib/data";
 
-const PARTICLE_COUNT = 2500;
+import { useAuth } from "@/context/AuthContext";
+const PARTICLE_COUNT = 2000;
 
 function CyberChess3D() {
   const containerRef = useRef(null);
+  
 
   useEffect(() => {
     const container = containerRef.current;
@@ -1412,6 +1414,10 @@ const animate = () => {
 ============================================================================ */
 
 export default function KineticHero() {
+
+  const { user, ready } = useAuth();
+
+const isLoggedIn = ready && user && user !== false;
   return (
     <section
       className="
@@ -1578,28 +1584,53 @@ export default function KineticHero() {
           "
         >
 
-          <Button
-            asChild
-            className="
-              rounded-full
-              bg-color
-              text-ink-base
-              font-mono
-              text-xs
-              font-bold
-              uppercase
-              tracking-wider
-              px-8
-              py-6
-              hover:bg-color
-              hover:scale-105
-              transition-transform
-            "
-          >
-            <Link to="/signup">
-              Enter the Board
-            </Link>
-          </Button>
+          {!isLoggedIn ? (
+  <Button
+    asChild
+    className="
+      rounded-full
+      bg-color
+      text-ink-base
+      font-mono
+      text-xs
+      font-bold
+      uppercase
+      tracking-wider
+      px-8
+      py-6
+      hover:bg-color
+      hover:scale-105
+      transition-transform
+    "
+  >
+    <Link to="/signup">
+      Enter the Board
+    </Link>
+  </Button>
+) : (
+  <Button
+    asChild
+    className="
+      rounded-full
+      bg-color
+      text-ink-base
+      font-mono
+      text-xs
+      font-bold
+      uppercase
+      tracking-wider
+      px-8
+      py-6
+      hover:bg-color
+      hover:scale-105
+      transition-transform
+    "
+  >
+    <Link to="/events">
+      Enter the Arena →
+    </Link>
+  </Button>
+)}
 
           <Button
             asChild

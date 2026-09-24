@@ -3,7 +3,7 @@ export const EVENT_INFO = {
   host: "Dept. of Computer Applications",
   college: "NIT Tiruchirappalli",
   tagline: "The Grandmaster's Gambit of Technology",
-  dates: "MARCH 06 – 08, 2026",
+  dates: "OCT 16 – 18, 2026",
 };
 
 export const EVENTS = [
@@ -148,14 +148,14 @@ export const EVENTS = [
 ];
 
 export const TEAM = [
-  { name: "Aditya ", role: "Convenor", init: "AM", image : "/images/aditya.jpeg" },
-  { name: "Saumya Gangwar", role: "Technical Lead", init: "SG" , image : "/images/saumya.jpeg"},
-  { name: "Anshuman ", role: "Design Head", init: "RI", image : "/images/anshu.jpeg" },
-  { name: "Sneha Raghavan", role: "Events Coordinator", init: "SR", image : "/images/satyam.jpeg" },
-  { name: "Karthik Subramanian", role: "Sponsorship Lead", init: "KS" , image : "/images/aditya.jpeg"},
-  { name: "Ananya Pillai", role: "Outreach & PR", init: "AP", image : "/images/.jpeg" },
-  { name: "Vikram Nair", role: "Logistics Head", init: "VN" ,image : "/images/pussy.jpeg"},
-  { name: "Meera Balaji", role: "Content Lead", init: "MB",image : "/images/laksya.jpeg" },
+  { name: "Saumya Gangwar", role: "ACM  OFFICE BEARER", init: "SG" , image : "/images/saumya.jpeg"},
+  { name: "Ankit Singh ", role: "ACM OFFICE BEARER", init: "AM", image : "/images/ankit.jpeg" },
+  { name: "Anshuman N J Singh ", role: "ACM OFFICE BEARER", init: "RI", image : "/images/anshu.jpeg" },
+  { name: "Satyam Mishra", role: "ACM OFFICE BEARER", init: "SR", image : "/images/satyam.jpeg" },
+  { name: "Aditya Kumar Sharma", role: "ACM OFFICE BEARER", init: "KS" , image : "/images/aditya.jpeg"},
+  { name: "Purshottam", role: "ACM OFFICE BEARER", init: "VN" ,image : "/images/pussy.jpeg"},
+  { name: "Laksya Khatri", role: "ACM OFFICE BEARER", init: "MB",image : "/images/laksya.jpeg" },
+  { name: "Rishabh Singh", role: "ACM OFFICE BEARER", init: "AP", image : "/images/rishabh.jpeg" },
 ];
 
 export const MANIFESTO = [
@@ -178,7 +178,7 @@ export const MANIFESTO = [
 
 export const STATS = [
   { value: "8+", label: "Battles" },
-  { value: "500+", label: "Players" },
-  { value: "₹1L+", label: "Prize Pool" },
+  { value: "100+", label: "Players" },
+  { value: "₹20K+", label: "Prize Pool" },
   { value: "1", label: "Ultimate Champion" },
 ];
