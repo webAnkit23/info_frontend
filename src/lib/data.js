@@ -148,14 +148,17 @@ export const EVENTS = [
 ];
 
 export const TEAM = [
-  { name: "Saumya Gangwar", role: "ACM  OFFICE BEARER", init: "SG" , image : "/images/saumya.jpeg"},
-  { name: "Ankit Singh ", role: "ACM OFFICE BEARER", init: "AM", image : "/images/ankit.jpeg" },
-  { name: "Anshuman N J Singh ", role: "ACM OFFICE BEARER", init: "RI", image : "/images/anshu.jpeg" },
-  { name: "Satyam Mishra", role: "ACM OFFICE BEARER", init: "SR", image : "/images/satyam.jpeg" },
   { name: "Aditya Kumar Sharma", role: "ACM OFFICE BEARER", init: "KS" , image : "/images/aditya.jpeg"},
-  { name: "Purshottam", role: "ACM OFFICE BEARER", init: "VN" ,image : "/images/pussy.jpeg"},
-  { name: "Laksya Khatri", role: "ACM OFFICE BEARER", init: "MB",image : "/images/laksya.jpeg" },
-  { name: "Rishabh Singh", role: "ACM OFFICE BEARER", init: "AP", image : "/images/rishabh.jpeg" },
+   { name: "Ankit Singh ", role: "ACM OFFICE BEARER", init: "AM", image : "/images/ankit.jpeg" },
+   { name: "Anshuman N J Singh ", role: "ACM OFFICE BEARER", init: "RI", image : "/images/anshu.jpeg" },
+    { name: "Laksya Khatri", role: "ACM OFFICE BEARER", init: "MB",image : "/images/laksya.jpeg" },
+     { name: "Purshottam", role: "ACM OFFICE BEARER", init: "VN" ,image : "/images/pussy.jpeg"},
+     { name: "Rishabh Singh", role: "ACM OFFICE BEARER", init: "AP", image : "/images/rishabh.jpeg" },
+
+     { name: "Satyam Mishra", role: "ACM OFFICE BEARER", init: "SR", image : "/images/satyam.jpeg" },
+  { name: "Saumya Gangwar", role: "ACM  OFFICE BEARER", init: "SG" , image : "/images/saumya.jpeg"},
+ 
+  
 ];
 
 export const MANIFESTO = [
