@@ -105,7 +105,7 @@ export default function ChessBackground() {
     // =========================================================
 
     const pieceCount =
-      window.innerWidth < 768 ? 30 : 80;
+      window.innerWidth < 768 ? 40 : 90;
 
     const pieces = Array.from({
       length: pieceCount,
@@ -161,8 +161,8 @@ export default function ChessBackground() {
 
     const dustCount =
       window.innerWidth < 768
-        ? 700
-        : 1300;
+        ? 500
+        : 1000;
 
     const dust = Array.from({
       length: dustCount,

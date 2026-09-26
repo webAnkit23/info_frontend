@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-const PARTICLE_COUNT = 3500;
+const PARTICLE_COUNT = 1600;
 
 function CyberChess3D() {
     const containerRef = useRef(null);

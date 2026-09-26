@@ -9,7 +9,7 @@ import { MaskedLines } from "@/components/Motion";
 import { EVENT_INFO } from "@/lib/data";
 
 import { useAuth } from "@/context/AuthContext";
-const PARTICLE_COUNT = 2000;
+const PARTICLE_COUNT = 1200;
 
 function CyberChess3D() {
   const containerRef = useRef(null);
