@@ -18,7 +18,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-
   const submit = async (e) => {
     e.preventDefault();
 
@@ -36,8 +35,9 @@ export default function Login() {
 
     } catch (err) {
       const msg =
-        formatApiErrorDetail(err.response?.data?.message) ||
-        "Login failed.";
+        formatApiErrorDetail(
+          err.response?.data?.message
+        ) || "Login failed.";
 
       setError(msg);
       toast.error(msg);
@@ -46,7 +46,6 @@ export default function Login() {
       setLoading(false);
     }
   };
-
 
   return (
     <AuthShell
@@ -72,10 +71,10 @@ export default function Login() {
         data-testid="login-form"
       >
 
-        {/* Identifier */}
+        {/* Email / Roll Number */}
         <div className="space-y-2">
           <Label className="font-mono text-xs uppercase tracking-wider text-zinc-400">
-            Email or User ID
+            Email or Roll Number
           </Label>
 
           <Input
@@ -84,9 +83,13 @@ export default function Login() {
             data-testid="login-identifier"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
-            placeholder="you@college.edu or 247"
+            placeholder="you@college.edu or 205125015"
             className="bg-ink-base/60 border-white/15 font-mono focus-visible:ring-amber-glow"
           />
+
+          <p className="text-xs text-zinc-500 font-mono">
+            Enter your registered email or roll number
+          </p>
         </div>
 
 

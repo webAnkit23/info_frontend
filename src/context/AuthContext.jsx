@@ -12,13 +12,28 @@ import api, {
     formatApiErrorDetail
 } from "@/lib/api";
 
+
+// =====================================================
+// CREATE AUTH CONTEXT
+// =====================================================
+
 const AuthContext = createContext(null);
+
+
+// =====================================================
+// AUTH PROVIDER
+// =====================================================
 
 export const AuthProvider = ({ children }) => {
 
-    // null = checking authentication
-    // false = not logged in
-    // object = logged-in user
+    /*
+        user states:
+
+        null   -> checking authentication
+        false  -> user is not logged in
+        object -> logged-in user
+    */
+
     const [user, setUser] = useState(null);
 
     const [ready, setReady] = useState(false);
@@ -30,25 +45,57 @@ export const AuthProvider = ({ children }) => {
 
     const loadUser = useCallback(async () => {
 
+        // Get JWT from storage
+        const token = getToken();
+
         // No token -> user is not logged in
-        if (!getToken()) {
+        if (!token) {
+
             setUser(false);
+
             setReady(true);
+
             return;
         }
 
+
         try {
 
-            const { data } = await api.get("/auth/me");
+            // Ask backend for logged-in user
+            const { data } = await api.get(
+                "/auth/me"
+            );
 
-            setUser(data.user || data);
+
+            // Backend returns:
+            //
+            // {
+            //     user: {
+            //         id,
+            //         userId,
+            //         name,
+            //         number,
+            //         email
+            //     }
+            // }
+
+            setUser(
+                data.user || data
+            );
 
         } catch (error) {
 
-            console.error("Failed to load user:", error);
+            console.error(
+                "Failed to load user:",
+                error
+            );
 
-            // Token is invalid/expired
+
+            // Token may be expired or invalid
             setToken(null);
+
+
+            // Mark user logged out
             setUser(false);
 
         } finally {
@@ -60,11 +107,13 @@ export const AuthProvider = ({ children }) => {
 
 
     // =====================================================
-    // LOAD USER WHEN APP STARTS
+    // LOAD USER WHEN APPLICATION STARTS
     // =====================================================
 
     useEffect(() => {
+
         loadUser();
+
     }, [loadUser]);
 
 
@@ -72,47 +121,127 @@ export const AuthProvider = ({ children }) => {
     // LOGIN
     // =====================================================
 
-    const login = async (identifier, password) => {
+    const login = async (
+        identifier,
+        password
+    ) => {
 
-        const { data } = await api.post("/auth/login", {
-            identifier,
-            password
-        });
+        /*
+            identifier can be:
 
-        // Store JWT
-        setToken(data.token);
+            Email:
+            student@gmail.com
 
-        // Store logged-in user
-        setUser(data.user);
+            OR
 
+            Roll Number / User ID:
+            10612345
+        */
+
+        const { data } = await api.post(
+            "/auth/login",
+            {
+                identifier,
+                password
+            }
+        );
+
+
+        // =========================
+        // STORE JWT
+        // =========================
+
+        setToken(
+            data.token
+        );
+
+
+        // =========================
+        // STORE USER
+        // =========================
+
+        setUser(
+            data.user
+        );
+
+
+        // Return user to Login component
         return data.user;
     };
 
 
     // =====================================================
-    // REGISTER
+    // REGISTER / SIGNUP
     // =====================================================
 
     const register = async (
         name,
+        userId,
         number,
         email,
         password
     ) => {
 
-        const { data } = await api.post("/auth/signup", {
-            name,
-            number,
-            email,
-            password
-        });
+        /*
+            userId is now the student's
+            Roll Number.
 
-        // Store JWT
-        setToken(data.token);
+            Example:
 
-        // Store logged-in user
-        setUser(data.user);
+            userId = "10612345"
+        */
 
+
+        const { data } = await api.post(
+            "/auth/signup",
+            {
+                userId,
+                name,
+                number,
+                email,
+                password
+            }
+        );
+
+
+        /*
+            Backend response:
+
+            {
+                message: "User created successfully",
+
+                token: "...",
+
+                user: {
+                    id: "...",
+                    userId: "10612345",
+                    name: "Ankit Singh",
+                    number: "9876543210",
+                    email: "..."
+                }
+            }
+        */
+
+
+        // =========================
+        // STORE JWT
+        // =========================
+
+        setToken(
+            data.token
+        );
+
+
+        // =========================
+        // STORE USER
+        // =========================
+
+        setUser(
+            data.user
+        );
+
+
+        // Return newly created user
         return data.user;
     };
 
@@ -123,32 +252,75 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
 
+        // Remove JWT
         setToken(null);
 
+
+        // Mark user logged out
         setUser(false);
     };
 
 
     // =====================================================
-    // CONTEXT
+    // AUTH CONTEXT VALUE
+    // =====================================================
+
+    const value = {
+
+        // Current user
+        user,
+
+        // Authentication loading completed
+        ready,
+
+        // Authentication functions
+        login,
+        register,
+        logout,
+        loadUser,
+
+        // API error formatter
+        formatApiErrorDetail
+    };
+
+
+    // =====================================================
+    // PROVIDER
     // =====================================================
 
     return (
+
         <AuthContext.Provider
-            value={{
-                user,
-                ready,
-                login,
-                register,
-                logout,
-                loadUser,
-                formatApiErrorDetail
-            }}
+            value={value}
         >
+
             {children}
+
         </AuthContext.Provider>
+
     );
 };
 
 
-export const useAuth = () => useContext(AuthContext);
+// =====================================================
+// USE AUTH HOOK
+// =====================================================
+
+export const useAuth = () => {
+
+    const context = useContext(
+        AuthContext
+    );
+
+
+    // Prevent useAuth outside AuthProvider
+    if (!context) {
+
+        throw new Error(
+            "useAuth must be used inside AuthProvider"
+        );
+    }
+
+
+    return context;
+};

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -13,6 +14,7 @@ export default function Signup() {
 
   const [form, setForm] = useState({
     name: "",
+    userId: "",
     email: "",
     phone: "",
     password: "",
@@ -35,21 +37,22 @@ export default function Signup() {
     const phoneRegex = /^[6-9]\d{9}$/;
 
     if (!phoneRegex.test(form.phone)) {
-      setError(
-        "Please enter a valid 10-digit Indian mobile number."
-      );
-
+      setError("Please enter a valid 10-digit Indian mobile number.");
       toast.error("Invalid phone number");
+      return;
+    }
 
+    // User ID / Roll Number validation
+    if (!form.userId.trim()) {
+      setError("Please enter your Roll Number.");
+      toast.error("Roll Number is required");
       return;
     }
 
     // Password validation
     if (form.password.length < 6) {
       setError("Password must be at least 6 characters.");
-
       toast.error("Password must be at least 6 characters");
-
       return;
     }
 
@@ -57,12 +60,17 @@ export default function Signup() {
     setError("");
 
     try {
-      // IMPORTANT:
-      // AuthContext expects:
-      // register(name, number, email, password)
+      // register(
+      //   name,
+      //   userId / roll number,
+      //   phone,
+      //   email,
+      //   password
+      // )
 
       const user = await register(
         form.name,
+        form.userId,
         form.phone,
         form.email,
         form.password
@@ -75,7 +83,6 @@ export default function Signup() {
       );
 
       navigate("/");
-
     } catch (err) {
       const msg =
         formatApiErrorDetail(
@@ -84,7 +91,6 @@ export default function Signup() {
 
       setError(msg);
       toast.error(msg);
-
     } finally {
       setLoading(false);
     }
@@ -128,6 +134,27 @@ export default function Signup() {
             placeholder="Your name"
             className="bg-ink-base/60 border-white/15 font-mono focus-visible:ring-amber-glow"
           />
+        </div>
+
+
+        {/* Roll Number / User ID */}
+        <div className="space-y-2">
+          <Label className="font-mono text-xs uppercase tracking-wider text-zinc-400">
+            Roll Number / User ID
+          </Label>
+
+          <Input
+            required
+            data-testid="signup-userid"
+            value={form.userId}
+            onChange={update("userId")}
+            placeholder="Enter your roll number"
+            className="bg-ink-base/60 border-white/15 font-mono focus-visible:ring-amber-glow"
+          />
+
+          <p className="text-xs text-zinc-500 font-mono">
+            Use your official college roll number
+          </p>
         </div>
 
 
@@ -218,3 +245,4 @@ export default function Signup() {
     </AuthShell>
   );
 }
+
